@@ -68,7 +68,6 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
@@ -77,11 +76,14 @@ app.UseAuthorization();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+        c.RoutePrefix = string.Empty; 
+    });
 }
 
-app.UseApiVersioning(); // ApiVersioning'i burada çağırın
-
+app.UseApiVersioning();
 app.MapControllers();
 
 app.Run();
